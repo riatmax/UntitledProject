@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
+        rb.drag = groundDrag;
     }
 
     private void Update()
@@ -44,15 +45,6 @@ public class PlayerMovement : MonoBehaviour
 
         MyInput();
         SpeedControl();
-
-        if (grounded)
-        {
-            rb.drag = groundDrag;
-        }
-        else
-        {
-            rb.drag = 0;
-        }
     }
     private void FixedUpdate()
     {
