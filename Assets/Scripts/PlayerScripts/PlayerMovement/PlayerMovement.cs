@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     bool grounded;
 
     public Transform orientation;
+    public Transform capsule;
 
     float horizontalInput;
     float verticalInput;
@@ -67,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection = capsule.forward * verticalInput + capsule.right * horizontalInput;
 
         if (grounded)
         {

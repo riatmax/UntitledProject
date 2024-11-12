@@ -23,6 +23,8 @@ public class ProGen : MonoBehaviour
 
     private void Start()
     {
+        //startPos = player.transform.position;
+
         for (int x = -worldSizeX; x < worldSizeX; x++)
         {
             for (int z = -worldSizeZ; z < worldSizeZ; z++)
