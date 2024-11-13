@@ -22,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask whatIsGround;
     bool grounded;
 
-    public Transform orientation;
     public Transform capsule;
 
     float horizontalInput;
