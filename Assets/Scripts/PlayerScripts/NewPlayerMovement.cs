@@ -11,10 +11,15 @@ public class NewPlayerMovement : MonoBehaviour
     public float lookSensY = 1f;
     public Vector3 velocity;
     CharacterController cc;
+    public Transform cameraTransform;
+    public float gravity = -9.8f;
+    public float sprintMultiplier = 2f;
+    public float verticalRotation;
 
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
     private void Update()
     {
@@ -24,7 +29,12 @@ public class NewPlayerMovement : MonoBehaviour
         Vector3 moveDirection = transform.forward * verticalMove + transform.right * horizontalMove;
         moveDirection.Normalize();
 
-        cc.Move(moveDirection * WalkSpeed * Time.deltaTime);
+        float speed = WalkSpeed;
+        if (Input.GetAxis("Sprint") > 0)
+        {
+            speed *= sprintMultiplier;
+        }
+        cc.Move(moveDirection * speed * Time.deltaTime);
 
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
@@ -32,7 +42,21 @@ public class NewPlayerMovement : MonoBehaviour
         }
         else
         {
-            velocity.y = gravity
+            velocity.y += gravity * Time.deltaTime;
+        }
+
+        cc.Move(velocity * Time.deltaTime);
+
+        if (cameraTransform != null)
+        {
+            float mouseX = Input.GetAxisRaw("Mouse X") * lookSensX;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * lookSensY;
+
+            verticalRotation -= mouseY;
+            verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
+
+            cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+            transform.Rotate(Vector3.up * mouseX);
         }
     }
 
