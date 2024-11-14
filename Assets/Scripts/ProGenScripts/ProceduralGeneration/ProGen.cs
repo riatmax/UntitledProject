@@ -23,8 +23,6 @@ public class ProGen : MonoBehaviour
 
     private void Start()
     {
-        //startPos = player.transform.position;
-
         for (int x = -worldSizeX; x < worldSizeX; x++)
         {
             for (int z = -worldSizeZ; z < worldSizeZ; z++)
@@ -123,4 +121,17 @@ public class ProGen : MonoBehaviour
 
         return Mathf.PerlinNoise(xNoise, zNoise);
     }
+
+    /*private class Tile
+    {
+        public float cTimestamp;
+        public GameObject tileObject;
+
+        public Tile(float cTimestamp, GameObject tileObject)
+        {
+            this.cTimestamp = cTimestamp;
+            this.tileObject = tileObject;
+        }
+
+    }*/
 }
