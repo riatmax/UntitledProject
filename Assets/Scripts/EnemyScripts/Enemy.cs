@@ -8,10 +8,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float health;
     public float burnAmt;
 
-    public void loseHealth(float healthAmt)
-    {
-        health -= healthAmt;
-    }
     public void death()
     {
         if (burnAmt == health)
