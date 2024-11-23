@@ -8,29 +8,25 @@ public class Flamethrower : EquippableItem
     [SerializeField] private float flameRange;
     [SerializeField] private float flameRadius;
     [SerializeField] private float flameDamage;
+    [SerializeField] private float burnCooldown;
 
     [SerializeField] private Transform nozzle;
 
-    private bool isFlaming = false;
+    private float nextDamageTime = 0f;
+    private RaycastHit[] hits;
     public override void LeftClick()
     {
-        if (Input.GetAxisRaw("Fire1") > 0 && !isFlaming)
+        hits = Physics.SphereCastAll(nozzle.transform.position,
+                                        flameRadius,
+                                        nozzle.transform.forward,
+                                        flameRange);
+        foreach (var hit in hits)
         {
-            isFlaming = true;
-            RaycastHit[] hits;
-            hits = Physics.CapsuleCastAll(nozzle.transform.position, 
-                                   new Vector3(nozzle.transform.position.x, nozzle.transform.position.y, nozzle.transform.position.z + flameRange),
-                                   flameRadius, 
-                                   Vector3.forward, 
-                                   flameRange);
-            for (int i = 0; i < hits.Length; i++)
+            var enemy = hit.collider.GetComponent<Enemy>();
+            if (enemy != null)
             {
-                if (hits[i].collider.gameObject.GetComponent<Enemy>() != null)
-                {
-                    hits[i].collider.gameObject.GetComponent<Enemy>().burnAmt += flameDamage;
-                }
+                enemy.burnAmt += flameDamage * Time.deltaTime;
             }
-            isFlaming = false;
         }
     }
 
@@ -38,16 +34,22 @@ public class Flamethrower : EquippableItem
     {
         
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        LeftClick();
+        if (Input.GetAxisRaw("Fire1") > 0)
+        {
+            if (Time.time >= nextDamageTime)
+            {
+                nextDamageTime = Time.time + burnCooldown;
+                LeftClick();
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(nozzle.transform.position, flameRadius);
+        Gizmos.DrawLine(nozzle.transform.position, nozzle.transform.position + nozzle.transform.forward * flameRange);
     }
 }

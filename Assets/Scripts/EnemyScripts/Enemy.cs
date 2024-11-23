@@ -6,31 +6,22 @@ public class Enemy : MonoBehaviour
 {
     [Header("Enemy Stats")]
     [SerializeField] private float health;
+    public float burnAmt;
 
     public void loseHealth(float healthAmt)
     {
         health -= healthAmt;
     }
-    public float burnAmt
-    {
-        get
-        {
-            return burnAmt;
-        }
-        set
-        {
-            burnAmt = Mathf.Clamp(value, 0, 100);
-        }
-    }
     public void death()
     {
-        if (health <= 0)
+        if (burnAmt == health)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
     private void Update()
     {
+        burnAmt = Mathf.Clamp(burnAmt, 0, health);
         death();
     }
 }
