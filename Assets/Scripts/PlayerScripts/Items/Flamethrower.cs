@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flamethrower : EquippableItem
+public class Flamethrower : UsableItem
 {
     [Header("Flamethrower Stats")]
     [SerializeField] private float flameRange;
